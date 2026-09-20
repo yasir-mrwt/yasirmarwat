@@ -1,6 +1,12 @@
 import { Container } from "@/components/layout/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { profile } from "@/data/profile";
+import { profileData } from "@/data/profile";
+
+const currentFocus = [
+  "Backend architecture and API design",
+  "Database and caching decisions",
+  "Testing, deployment, and production debugging",
+];
 
 export function About() {
   return (
@@ -11,38 +17,48 @@ export function About() {
     >
       <Container>
         <SectionHeader
-          index="12"
           eyebrow="ABOUT"
-          title="A full-stack view, with a backend center of gravity."
+          title={`${profileData.fullName}, professionally known as ${profileData.alias}.`}
         />
         <div className="about-layout">
-          <p className="about-lead">{profile.bio}</p>
-          <dl>
-            <div>
-              <dt>Current role</dt>
-              <dd>{profile.role}</dd>
+          <div className="about-copy">
+            <p>{profileData.primaryNiche}</p>
+            <p>
+              I enjoy work where frontend behavior and backend quality meet:
+              clear states, dependable APIs, thoughtful data handling, and
+              deployments that behave as expected.
+            </p>
+          </div>
+          <aside className="about-facts">
+            <dl>
+              <div>
+                <dt>Role</dt>
+                <dd>{profileData.displayTitle}</dd>
+              </div>
+              <div>
+                <dt>Based in</dt>
+                <dd>{profileData.location}</dd>
+              </div>
+              <div>
+                <dt>Timezone</dt>
+                <dd>{profileData.timezone}</dd>
+              </div>
+              {profileData.education ? (
+                <div>
+                  <dt>Education</dt>
+                  <dd>{profileData.education}</dd>
+                </div>
+              ) : null}
+            </dl>
+            <div className="current-focus">
+              <span>CURRENT FOCUS</span>
+              <ul>
+                {currentFocus.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
-            <div>
-              <dt>Experience</dt>
-              <dd>{profile.experience}</dd>
-            </div>
-            <div>
-              <dt>Current focus</dt>
-              <dd>Reliable APIs, scalable request flow, production behavior</dd>
-            </div>
-            <div>
-              <dt>Timezone</dt>
-              <dd>{profile.timezone}</dd>
-            </div>
-            <div>
-              <dt>Location</dt>
-              <dd>{profile.location ?? "TODO: add location"}</dd>
-            </div>
-            <div>
-              <dt>Education</dt>
-              <dd>{profile.education ?? "TODO: add education"}</dd>
-            </div>
-          </dl>
+          </aside>
         </div>
       </Container>
     </section>

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { profile } from "@/data/profile";
 import { PrintButton } from "@/components/ui/PrintButton";
+import { profileData } from "@/data/profile";
 
-export const metadata: Metadata = { title: "Résumé | Engineering Portfolio" };
+export const metadata: Metadata = {
+  title: `Résumé | ${profileData.fullName}`,
+  description: `${profileData.fullName} — ${profileData.displayTitle}`,
+};
 
 export default function ResumePage() {
   return (
@@ -13,40 +16,45 @@ export default function ResumePage() {
         <PrintButton />
       </div>
       <article>
-        <span className="mono-label">RÉSUMÉ / CONTENT PLACEHOLDER</span>
-        <h1>{profile.name ?? "TODO: add name"}</h1>
-        <p className="resume-role">{profile.role}</p>
-        <p>{profile.bio}</p>
+        <span className="mono-label">MUHAMMAD YASIR / RÉSUMÉ</span>
+        <h1>{profileData.fullName}</h1>
+        <p className="resume-role">{profileData.displayTitle}</p>
+        <p>{profileData.primaryNiche}</p>
         <section>
-          <h2>Contact</h2>
+          <h2>Profile</h2>
           <p>
-            {profile.email ?? "TODO: add email"} ·{" "}
-            {profile.location ?? "TODO: add location"} · {profile.timezone}
+            {profileData.experienceSummary}. Based in {profileData.location} and
+            working in {profileData.timezone}.
           </p>
         </section>
         <section>
-          <h2>Experience</h2>
+          <h2>Core technologies</h2>
           <p>
-            TODO: add verified role history, responsibilities, technologies, and
-            dates.
+            TypeScript, React, Next.js, Node.js, Express, REST APIs, PostgreSQL,
+            MongoDB, Redis, Supertest, Docker, and CI/CD.
           </p>
         </section>
         <section>
-          <h2>Projects</h2>
+          <h2>Engineering focus</h2>
           <p>
-            TODO: replace the portfolio’s demo system with factual project
-            content.
+            Full-stack product features, backend APIs, validation, data
+            handling, testing, deployment, responsive UX, and production
+            debugging.
           </p>
         </section>
         <section>
-          <h2>Education</h2>
-          <p>{profile.education ?? "TODO: add verified education"}</p>
+          <h2>Verified profiles</h2>
+          <p>
+            <a href={profileData.socials.github}>GitHub ↗</a> ·{" "}
+            <a href={profileData.socials.linkedin}>LinkedIn ↗</a> ·{" "}
+            <a href={profileData.socials.website}>Portfolio ↗</a>
+          </p>
         </section>
         <aside>
-          <strong>Why this page is incomplete</strong>
+          <strong>Employment and project record</strong>
           <p>
-            The portfolio brief explicitly prohibits fabricated facts. This
-            printable route remains honest until résumé content is supplied.
+            Detailed role history and project case studies are excluded until
+            the verified source material is added.
           </p>
         </aside>
       </article>

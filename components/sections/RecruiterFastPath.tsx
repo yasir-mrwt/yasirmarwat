@@ -1,89 +1,106 @@
 "use client";
 
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, X } from "lucide-react";
+import Link from "next/link";
 import { useRef } from "react";
-import { projects } from "@/data/projects";
-import { profile } from "@/data/profile";
-import { Container } from "@/components/layout/Container";
+import { profileData } from "@/data/profile";
 
 export function RecruiterFastPath() {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const project = projects[0];
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  function open() {
-    dialogRef.current?.showModal();
+  function close() {
+    dialogRef.current?.close();
+    triggerRef.current?.focus();
   }
 
   return (
-    <section className="recruiter-section" aria-labelledby="recruiter-title">
-      <Container>
-        <div>
-          <span className="mono-label">RECRUITER_FAST_PATH / 60 SEC</span>
-          <h2 id="recruiter-title">Need the short version?</h2>
-        </div>
-        <p>
-          Role, core strengths, project context, and contact details in one
-          focused view.
-        </p>
-        <button className="button button--primary" type="button" onClick={open}>
-          Open fast view <ArrowUpRight size={16} />
-        </button>
-      </Container>
+    <div className="fast-path">
+      <div>
+        <span className="mono-label">SHORT ON TIME?</span>
+        <p>Role, experience, strengths, and links in one focused view.</p>
+      </div>
+      <button
+        ref={triggerRef}
+        className="fast-path-trigger"
+        type="button"
+        onClick={() => dialogRef.current?.showModal()}
+      >
+        Recruiter fast view <ArrowUpRight size={16} />
+      </button>
       <dialog
-        className="fast-dialog"
         ref={dialogRef}
+        className="fast-dialog"
+        onClose={() => triggerRef.current?.focus()}
         onClick={(event) => {
-          if (event.target === dialogRef.current) dialogRef.current?.close();
+          if (event.target === dialogRef.current) close();
         }}
       >
-        <div className="dialog-panel">
+        <article className="dialog-panel">
           <header>
-            <span>60-SECOND VERSION / PROFILE</span>
-            <button
-              type="button"
-              onClick={() => dialogRef.current?.close()}
-              aria-label="Close fast view"
-            >
+            <div>
+              <span className="mono-label">PROFILE SUMMARY</span>
+              <strong>{profileData.fullName}</strong>
+            </div>
+            <button type="button" onClick={close} aria-label="Close fast view">
               <X />
             </button>
           </header>
-          <div className="dialog-intro">
-            <p>Role</p>
-            <h2>{profile.role}</h2>
-            <span>{profile.experience}</span>
+          <div className="dialog-title">
+            <p>{profileData.displayTitle}</p>
+            <h2>
+              Building practical web products from interface to deployment.
+            </h2>
           </div>
+          <p className="dialog-summary">{profileData.primaryNiche}</p>
           <dl>
             <div>
-              <dt>Strongest technologies</dt>
-              <dd>TypeScript, React / Next.js, Node.js / Express, REST APIs</dd>
+              <dt>Experience</dt>
+              <dd>{profileData.experienceSummary}</dd>
             </div>
             <div>
-              <dt>Backend strengths</dt>
+              <dt>Core technologies</dt>
               <dd>
-                Validation, caching, API testing, Docker, CI/CD, production
-                debugging
+                TypeScript, React, Next.js, Node.js, Express, PostgreSQL,
+                MongoDB, Redis
               </dd>
             </div>
             <div>
-              <dt>Project</dt>
+              <dt>Backend focus</dt>
               <dd>
-                {project.title} — placeholder module; real project data is still
-                TODO.
+                REST APIs, validation, caching, testing, Docker, CI/CD,
+                deployment debugging
               </dd>
             </div>
             <div>
-              <dt>Timezone</dt>
-              <dd>{profile.timezone}</dd>
+              <dt>Based in</dt>
+              <dd>
+                {profileData.location} · {profileData.timezone}
+              </dd>
             </div>
           </dl>
-          <nav aria-label="Profile links">
-            <a href="/resume">Résumé</a>
-            <span aria-disabled="true">GitHub · TODO</span>
-            <span aria-disabled="true">LinkedIn · TODO</span>
-            <span aria-disabled="true">Email · TODO</span>
+          <nav aria-label="Recruiter links">
+            <Link href="/resume">View résumé</Link>
+            <a
+              href={profileData.socials.github}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github size={16} /> GitHub
+            </a>
+            <a
+              href={profileData.socials.linkedin}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Linkedin size={16} /> LinkedIn
+            </a>
+            <a href="#contact" onClick={close}>
+              Contact
+            </a>
           </nav>
-        </div>
+        </article>
       </dialog>
-    </section>
+    </div>
   );
 }

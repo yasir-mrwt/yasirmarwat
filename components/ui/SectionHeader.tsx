@@ -1,26 +1,13 @@
 type SectionHeaderProps = {
-  index: string;
   eyebrow: string;
   title: string;
   intro?: string;
-  light?: boolean;
 };
 
-export function SectionHeader({
-  index,
-  eyebrow,
-  title,
-  intro,
-  light,
-}: SectionHeaderProps) {
+export function SectionHeader({ eyebrow, title, intro }: SectionHeaderProps) {
   return (
-    <header
-      className={`section-header ${light ? "section-header--light" : ""}`}
-    >
-      <div className="section-kicker">
-        <span>{index}</span>
-        <span>{eyebrow}</span>
-      </div>
+    <header className="section-header">
+      <span className="section-kicker">{eyebrow}</span>
       <h2>{title}</h2>
       {intro ? <p>{intro}</p> : null}
     </header>

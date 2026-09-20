@@ -1,22 +1,21 @@
 import { Container } from "@/components/layout/Container";
-import { ProjectSystem } from "@/components/projects/ProjectSystem";
 import { Reveal } from "@/components/motion/Reveal";
+import { ProjectSystem } from "@/components/projects/ProjectSystem";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { projects } from "@/data/projects";
 
-export function SelectedSystems() {
+export function SelectedWork() {
   return (
     <section
-      className="section selected-systems"
+      className="section work-section"
       id="work"
       aria-labelledby="work-title"
     >
       <Container>
         <SectionHeader
-          index="02"
-          eyebrow="SELECTED SYSTEMS"
-          title="Explain the system, not just the screenshot."
-          intro="One transparent demo proves the component language now. Factual project data can replace it later without rebuilding the experience."
+          eyebrow="SELECTED WORK"
+          title="Evidence belongs here."
+          intro="Each case study will show the problem, my contribution, implementation decisions, quality work, and real links. No invented outcomes."
         />
         <Reveal>
           <ProjectSystem project={projects[0]} />

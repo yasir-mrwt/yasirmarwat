@@ -1,39 +1,61 @@
 import { expect, test } from "@playwright/test";
 
-test("homepage loads the complete engineering narrative", async ({ page }) => {
+test("homepage presents the personal portfolio in recruiter order", async ({
+  page,
+}) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "interface",
-  );
   await expect(
-    page.getByRole("heading", { name: "Demo System" }),
+    page.getByRole("heading", { level: 1, name: /Full-Stack Engineer/ }),
   ).toBeVisible();
-  await expect(page.getByText("DEMONSTRATION DATA")).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "How I think about reliability." }),
+    page.getByText("Muhammad Yasir", { exact: true }).first(),
   ).toBeVisible();
-  await expect(page.locator("article.project-system")).toHaveCount(1);
+  await expect(page.getByText(/also known as Yasir Marwat/i)).toBeVisible();
+  const order = await page
+    .locator("main > section")
+    .evaluateAll((sections) => sections.map((section) => section.id));
+  expect(order).toEqual([
+    "home",
+    "work",
+    "experience",
+    "focus",
+    "stack",
+    "about",
+    "contact",
+  ]);
+  await expect(page.locator("body")).not.toContainText("TODO");
+  await expect(page.locator("body")).not.toContainText("QUESTIONS_I_ASK");
 });
 
-test("navigation reaches the expected sections", async ({ page }, testInfo) => {
+test("navigation follows the page sequence", async ({ page }, testInfo) => {
   await page.goto("/");
   if (testInfo.project.name.startsWith("desktop")) {
-    await page
-      .getByRole("navigation", { name: "Primary navigation" })
-      .getByRole("link", { name: "Work" })
-      .click();
+    const navigation = page.getByRole("navigation", {
+      name: "Primary navigation",
+    });
+    await expect(
+      navigation.getByRole("link").allTextContents(),
+    ).resolves.toEqual([
+      "Work",
+      "Experience",
+      "Stack",
+      "About",
+      "Contact",
+      "Résumé",
+    ]);
+    await navigation.getByRole("link", { name: "Work" }).click();
   } else {
     await page.getByRole("button", { name: /menu/i }).click();
     await page
       .getByRole("navigation", { name: "Mobile navigation" })
-      .getByRole("link", { name: /Work/ })
+      .getByRole("link", { name: "Work" })
       .click();
   }
   await expect(page).toHaveURL(/#work$/);
   await expect(page.locator("#work")).toBeInViewport();
 });
 
-test("mobile menu opens, closes, and locks scrolling", async ({
+test("mobile menu traps focus, closes with Escape, and restores focus", async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -41,71 +63,161 @@ test("mobile menu opens, closes, and locks scrolling", async ({
     "Mobile-only behavior",
   );
   await page.goto("/");
-  const menuTrigger = page.getByRole("button", { name: /menu/i });
-  const closeButton = page.getByRole("button", { name: "Close menu" });
-  const mobileNavigation = page.getByRole("navigation", {
-    name: "Mobile navigation",
-  });
-  await menuTrigger.click();
+  const trigger = page.getByRole("button", { name: /menu/i });
+  const close = page.getByRole("button", { name: "Close menu" });
+  const mobileMenu = page.locator("#mobile-menu");
+  await trigger.click();
   await expect(page.locator("body")).toHaveClass(/menu-open/);
-  await expect(mobileNavigation).toBeVisible();
-  await expect(closeButton).toBeFocused();
+  await expect(close).toBeFocused();
   await page.keyboard.press("Shift+Tab");
   await expect(
-    mobileNavigation.getByRole("link", { name: /Résumé/ }),
+    mobileMenu.getByRole("link", { name: /LinkedIn/ }),
   ).toBeFocused();
-  await page.keyboard.press("Tab");
-  await expect(closeButton).toBeFocused();
-  await closeButton.click();
+  await page.keyboard.press("Escape");
   await expect(page.locator("body")).not.toHaveClass(/menu-open/);
-  await expect(menuTrigger).toBeFocused();
+  await expect(trigger).toBeFocused();
 });
 
-test("recruiter fast path opens and closes accessibly", async ({ page }) => {
+test("selected work stays honest until verified projects are supplied", async ({
+  page,
+}) => {
+  await page.goto("/#work");
+  await expect(page.locator(".project-feature")).toHaveCount(1);
+  await expect(
+    page.getByText("INTERNAL CONTENT TEMPLATE · NOT A SHIPPED PROJECT"),
+  ).toBeVisible();
+  await expect(page.locator(".project-actions")).toHaveCount(0);
+  await expect(page.getByText(/users|revenue|performance gain/i)).toHaveCount(
+    0,
+  );
+});
+
+test("recruiter fast view is polished and keyboard dismissible", async ({
+  page,
+}) => {
   await page.goto("/");
-  await page.getByRole("button", { name: /open fast view/i }).click();
+  const trigger = page.getByRole("button", { name: /recruiter fast view/i });
+  await trigger.click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await expect(
-    dialog.getByText("Backend-leaning full-stack engineer"),
+    dialog.getByText("Full-Stack Engineer · Backend-Leaning"),
   ).toBeVisible();
-  await dialog.getByRole("button", { name: "Close fast view" }).click();
+  await expect(dialog).not.toContainText("TODO");
+  await expect(dialog.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
+    "href",
+    "https://github.com/yasir-mrwt",
+  );
+  await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
 });
 
-test("project and failure interactions expose details", async ({ page }) => {
+test("resume and verified social actions resolve", async ({ page }) => {
   await page.goto("/");
-  const architecture = page.locator(".project-architecture");
-  await architecture.getByRole("button", { name: /Database/ }).click();
-  await expect(architecture.getByText(/source of truth/)).toBeVisible();
-  await page.getByRole("button", { name: /Database unavailable/ }).click();
-  await expect(page.getByText(/Fail within a bounded timeout/)).toBeVisible();
-});
-
-test("resume route and contact actions remain honest", async ({ page }) => {
-  await page.goto("/");
-  await page
-    .locator("#contact")
-    .getByRole("link", { name: "View résumé" })
-    .click();
+  await expect(
+    page.getByRole("link", { name: /GitHub/ }).first(),
+  ).toHaveAttribute("href", "https://github.com/yasir-mrwt");
+  await expect(
+    page.getByRole("link", { name: /LinkedIn/ }).first(),
+  ).toHaveAttribute(
+    "href",
+    "https://www.linkedin.com/in/muhammad-yasir-50b240315/",
+  );
+  await page.getByRole("link", { name: "Résumé", exact: true }).first().click();
   await expect(page).toHaveURL(/\/resume$/);
   await expect(
-    page.getByRole("heading", { name: "TODO: add name" }),
+    page.getByRole("heading", { name: "Muhammad Yasir" }),
   ).toBeVisible();
-  await page.goto("/#contact");
-  await expect(
-    page.getByRole("button", { name: "TODO: add email" }),
-  ).toBeDisabled();
+  await expect(page.locator("body")).not.toContainText("TODO");
 });
 
-test("reduced motion preserves content", async ({ page }) => {
+test("contact form validates and preserves values when delivery is unavailable", async ({
+  page,
+}) => {
+  await page.goto("/#contact");
+  await page.getByRole("button", { name: /send message/i }).click();
+  await expect(page.getByText("Enter at least 2 characters.")).toBeVisible();
+  await expect(page.getByText("Enter a valid email address.")).toBeVisible();
+  await page.getByLabel("Name").fill("Test Sender");
+  await page.getByLabel("Email").fill("sender@example.com");
+  await page
+    .getByLabel("Message")
+    .fill("This is a valid test message for the portfolio contact form.");
+  await page.getByRole("button", { name: /send message/i }).click();
+  await expect(
+    page.getByText(/Contact delivery is not configured yet/),
+  ).toBeVisible();
+  await expect(page.getByLabel("Message")).toHaveValue(
+    "This is a valid test message for the portfolio contact form.",
+  );
+});
+
+test("contact form shows success only after a successful server response", async ({
+  page,
+}) => {
+  await page.route("**/api/contact", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ message: "Message delivered." }),
+    }),
+  );
+  await page.goto("/#contact");
+  await page.getByLabel("Name").fill("Test Sender");
+  await page.getByLabel("Email").fill("sender@example.com");
+  await page
+    .getByLabel("Message")
+    .fill("This request receives a controlled successful response.");
+  await page.getByRole("button", { name: /send message/i }).click();
+  await expect(
+    page.getByText("Message delivered.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Message")).toHaveValue("");
+});
+
+test("contact API rejects invalid submissions", async ({ request }) => {
+  const response = await request.post("/api/contact", {
+    data: { name: "", email: "bad", message: "short" },
+  });
+  expect(response.status()).toBe(400);
+  await expect(response.json()).resolves.toMatchObject({
+    message: "Please correct the highlighted fields.",
+  });
+});
+
+test("identity metadata and crawler endpoints are available", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://yasirmarwat.site",
+  );
+  const schema = await page
+    .locator('script[type="application/ld+json"]')
+    .textContent();
+  expect(schema).toContain('"alternateName":"Yasir Marwat"');
+  expect(schema).toContain('"@type":"ProfilePage"');
+  const robots = await (await request.get("/robots.txt")).text();
+  expect(robots).toContain("https://yasirmarwat.site/sitemap.xml");
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  expect(sitemap).toContain("https://yasirmarwat.site");
+  expect(sitemap).not.toContain("case-study-template");
+});
+
+test("reduced motion preserves the complete story", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Demo System" }),
+    page.getByRole("heading", { name: "Evidence belongs here." }),
   ).toBeVisible();
   await expect(
-    page.getByText("REQUEST_LIFECYCLE", { exact: true }).first(),
+    page.getByRole("heading", { name: "Where I contribute across a product." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Let’s talk about the work." }),
   ).toBeVisible();
 });
 
@@ -117,15 +229,4 @@ test("page has no obvious horizontal overflow", async ({ page }) => {
       document.documentElement.clientWidth,
   );
   expect(overflow).toBeLessThanOrEqual(1);
-});
-
-test("expandable responsibility works with keyboard", async ({ page }) => {
-  await page.goto("/");
-  const summary = page.locator(".responsibility summary").first();
-  await summary.focus();
-  await page.keyboard.press("Enter");
-  await expect(page.locator(".responsibility").first()).toHaveAttribute(
-    "open",
-    "",
-  );
 });

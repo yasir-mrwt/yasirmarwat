@@ -1,57 +1,53 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { Button } from "@/components/ui/Button";
 import { CopyEmail } from "@/components/ui/CopyEmail";
-import { profile } from "@/data/profile";
+import { profileData } from "@/data/profile";
 
 export function Contact() {
   return (
     <section
-      className="contact-section"
+      className="section contact-section"
       id="contact"
       aria-labelledby="contact-title"
     >
       <Container>
-        <div className="contact-signal" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-        <span className="mono-label">CONTACT / FINAL NODE</span>
-        <h2 id="contact-title">
-          Have a product or backend problem worth solving?
-        </h2>
-        <p>
-          Start with the constraint, the failure mode, or the behavior that
-          needs to improve.
-        </p>
-        <div className="contact-actions">
-          {profile.email ? (
-            <Button href={`mailto:${profile.email}`} variant="primary">
-              Email me <ArrowUpRight size={16} />
+        <div className="contact-intro">
+          <span className="section-kicker">CONTACT</span>
+          <h2 id="contact-title">Let’s talk about the work.</h2>
+          <p>
+            For a role, project, or technical problem that fits my experience,
+            send a concise note or reach out through a verified profile.
+          </p>
+          <div className="contact-actions">
+            <Button href={profileData.socials.github}>
+              <Github size={16} /> GitHub
             </Button>
-          ) : null}
-          <CopyEmail email={profile.email} />
-          <Button href="/resume">View résumé</Button>
+            <Button href={profileData.socials.linkedin}>
+              <Linkedin size={16} /> LinkedIn
+            </Button>
+            <Button href="/resume">
+              Résumé <ArrowUpRight size={16} />
+            </Button>
+            {profileData.email ? <CopyEmail email={profileData.email} /> : null}
+          </div>
+          <dl>
+            <div>
+              <dt>Availability</dt>
+              <dd>{profileData.availability}</dd>
+            </div>
+            <div>
+              <dt>Location</dt>
+              <dd>{profileData.location}</dd>
+            </div>
+            <div>
+              <dt>Timezone</dt>
+              <dd>{profileData.timezone}</dd>
+            </div>
+          </dl>
         </div>
-        <dl>
-          <div>
-            <dt>Email</dt>
-            <dd>{profile.email ?? "TODO: add email"}</dd>
-          </div>
-          <div>
-            <dt>GitHub</dt>
-            <dd>{profile.github ?? "TODO: add GitHub"}</dd>
-          </div>
-          <div>
-            <dt>LinkedIn</dt>
-            <dd>{profile.linkedin ?? "TODO: add LinkedIn"}</dd>
-          </div>
-          <div>
-            <dt>Availability</dt>
-            <dd>{profile.availability}</dd>
-          </div>
-        </dl>
+        <ContactForm />
       </Container>
     </section>
   );

@@ -5,21 +5,27 @@ import { stackGroups } from "@/data/skills";
 
 export function Stack() {
   return (
-    <section className="section stack-section" aria-labelledby="stack-title">
+    <section
+      className="section stack-section"
+      id="stack"
+      aria-labelledby="stack-title"
+    >
       <Container>
         <SectionHeader
-          index="07"
           eyebrow="TECHNICAL STACK"
-          title="Tools organized by responsibility."
-          intro="No percentages or expert labels—just what each tool is used to do."
+          title="Tools tied to real responsibilities."
+          intro="Grouped by how they contribute to building, testing, and delivering web products."
         />
         <div className="stack-grid">
           {stackGroups.map((group, index) => (
             <Reveal key={group.title}>
               <article>
                 <header>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <h3>{group.title}</h3>
+                  <span>0{index + 1}</span>
+                  <div>
+                    <h3>{group.title}</h3>
+                    <p>{group.summary}</p>
+                  </div>
                 </header>
                 <dl>
                   {group.items.map(([name, use]) => (

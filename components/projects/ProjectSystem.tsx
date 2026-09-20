@@ -1,94 +1,105 @@
-import { ArrowUpRight } from "lucide-react";
-import { ProjectArchitecture } from "./ProjectArchitecture";
-import { ProjectDecision } from "./ProjectDecision";
-import { ProjectFlow } from "./ProjectFlow";
-import { CodeBlock } from "@/components/ui/CodeBlock";
+import { ArrowUpRight, Github } from "lucide-react";
 import type { Project } from "@/data/projects";
 
 export function ProjectSystem({ project }: { project: Project }) {
   return (
-    <article className="project-system">
-      <header className="project-intro">
-        <div>
-          <span className="mono-label">{project.eyebrow}</span>
-          <h3>{project.title}</h3>
+    <article
+      className="project-feature"
+      data-placeholder={project.isPlaceholder}
+    >
+      <div
+        className="project-media"
+        aria-label={`${project.title} presentation preview`}
+      >
+        <div className="project-browser" aria-hidden="true">
+          <div className="browser-bar">
+            <i />
+            <i />
+            <i />
+            <span>CASE_STUDY / VERIFIED_WORK</span>
+          </div>
+          <div className="browser-body">
+            <aside>
+              <span />
+              <span />
+              <span />
+              <span />
+            </aside>
+            <main>
+              <span className="mock-label" />
+              <span className="mock-title" />
+              <span className="mock-title mock-title--short" />
+              <div>
+                <span />
+                <span />
+              </div>
+            </main>
+          </div>
         </div>
-        <p>{project.tagline}</p>
-        <dl>
-          <div>
-            <dt>Purpose</dt>
-            <dd>{project.purpose}</dd>
-          </div>
-          <div>
-            <dt>Role</dt>
-            <dd>{project.role}</dd>
-          </div>
-          <div>
-            <dt>Status</dt>
-            <dd>
-              <span className="placeholder-badge">DEMONSTRATION DATA</span>
-            </dd>
-          </div>
-        </dl>
-      </header>
-
-      <div className="project-architecture-wrap">
-        <ProjectArchitecture nodes={project.architecture} />
+        <span className="project-stamp">
+          CONTENT SLOT
+          <br />
+          READY
+        </span>
       </div>
+      <div className="project-content">
+        <span className="project-label">{project.label}</span>
+        <h3>{project.title}</h3>
+        <p className="project-summary">{project.summary}</p>
 
-      <div className="project-narrative">
-        <ProjectDecision decision={project.decisions[0]} />
-        <div className="project-notes">
-          <article>
-            <span>RELIABILITY NOTE</span>
-            <h4>Degrade deliberately</h4>
-            <p>{project.reliability}</p>
-          </article>
-          <article>
-            <span>SCALABILITY NOTE</span>
-            <h4>Earn the complexity</h4>
-            <p>{project.scalability}</p>
-          </article>
-          <article>
-            <span>TEST STRATEGY</span>
-            <h4>Exercise behavior</h4>
-            <ul>
-              {project.testing.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </article>
-        </div>
-        <CodeBlock
-          language={project.code.language}
-          title="Cache fallback"
-          why={project.code.why}
-        >
-          {project.code.source}
-        </CodeBlock>
-        <section
-          className="project-deployment"
-          aria-labelledby="deployment-title"
-        >
-          <div>
-            <span className="mono-label">RELEASE_PATH</span>
-            <h4 id="deployment-title">Deployment should be repeatable.</h4>
+        {project.contribution ? (
+          <p className="project-contribution">
+            <strong>My contribution</strong>
+            {project.contribution}
+          </p>
+        ) : null}
+
+        <ul className="project-highlights" aria-label="Case study content">
+          {project.highlights.map((highlight) => (
+            <li key={highlight}>{highlight}</li>
+          ))}
+        </ul>
+
+        {project.technicalDecision ? (
+          <div className="project-decision">
+            <h4>Technical decision</h4>
+            <p>
+              <strong>Challenge:</strong> {project.technicalDecision.challenge}
+            </p>
+            <p>
+              <strong>Approach:</strong> {project.technicalDecision.approach}
+            </p>
+            <p>
+              <strong>Tradeoff:</strong> {project.technicalDecision.tradeoff}
+            </p>
           </div>
-          <ProjectFlow stages={project.deployment} />
-        </section>
-        <footer className="project-footer">
-          <ul aria-label="Demo technology list">
-            {project.stack.map((item) => (
-              <li key={item}>{item}</li>
+        ) : null}
+
+        {project.technologies.length ? (
+          <ul className="project-tech">
+            {project.technologies.map((technology) => (
+              <li key={technology}>{technology}</li>
             ))}
           </ul>
-          <span
-            className="button button--secondary button--disabled"
-            aria-disabled="true"
-          >
-            TODO: add project link <ArrowUpRight size={16} />
-          </span>
-        </footer>
+        ) : null}
+        {project.qualityNote ? (
+          <p className="project-quality">{project.qualityNote}</p>
+        ) : null}
+
+        {project.links.live || project.links.source ? (
+          <div className="project-actions">
+            {project.links.live ? (
+              <a href={project.links.live} target="_blank" rel="noreferrer">
+                Live project <ArrowUpRight size={16} />
+              </a>
+            ) : null}
+            {project.links.source ? (
+              <a href={project.links.source} target="_blank" rel="noreferrer">
+                <Github size={16} /> Source
+              </a>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </article>
   );

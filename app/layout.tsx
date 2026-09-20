@@ -1,32 +1,56 @@
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
+import { profileData } from "@/data/profile";
 import "./globals.css";
 
-const siteUrl = new URL(
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-);
-
 export const metadata: Metadata = {
-  metadataBase: siteUrl,
-  title:
-    "Full-Stack Developer — Backend, TypeScript, APIs & Production Systems",
-  description:
-    "Backend-leaning full-stack engineering portfolio focused on typed APIs, validation, reliability, testing, deployment, performance, and thoughtful product UX.",
-  alternates: { canonical: "/" },
+  metadataBase: new URL(profileData.socials.website),
+  title: `${profileData.fullName} (${profileData.alias}) | ${profileData.displayTitle}`,
+  description: profileData.aiSummary,
+  keywords: [
+    profileData.fullName,
+    profileData.alias,
+    "Yasir Marwat Software Engineer",
+    "Muhammad Yasir Full-Stack Developer",
+    "Full-Stack Engineer Peshawar",
+    "Backend Developer Peshawar",
+    "Node.js developer portfolio",
+    "Next.js full-stack portfolio",
+    "TypeScript developer portfolio",
+    "PostgreSQL Node.js developer",
+    "Redis caching API validation portfolio",
+  ],
+  authors: [{ name: profileData.fullName, url: profileData.socials.website }],
+  creator: profileData.fullName,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: { canonical: profileData.socials.website },
   openGraph: {
-    type: "website",
-    url: "/",
-    title: "Full-Stack Developer — Backend & Production Systems",
-    description:
-      "From interface to infrastructure: TypeScript, Node.js, APIs, reliability, testing, and deployment.",
-    siteName: "Engineering Portfolio",
+    type: "profile",
+    url: profileData.socials.website,
+    title: `${profileData.fullName} | ${profileData.displayTitle}`,
+    description: profileData.aiSummary,
+    siteName: `${profileData.fullName} Portfolio`,
+    locale: "en_US",
+    firstName: "Muhammad",
+    lastName: "Yasir",
+    username: "yasirmarwat",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Full-Stack Developer — Backend & Production Systems",
-    description:
-      "From interface to infrastructure: TypeScript, Node.js, APIs, reliability, testing, and deployment.",
+    title: `${profileData.fullName} | ${profileData.displayTitle}`,
+    description: profileData.aiSummary,
   },
 };
 
@@ -40,41 +64,11 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        url: siteUrl.toString(),
-        description: "Backend-leaning full-stack engineering portfolio",
-      },
-      {
-        "@type": "Person",
-        jobTitle: "Backend-leaning full-stack engineer",
-        knowsAbout: [
-          "TypeScript",
-          "Node.js",
-          "REST APIs",
-          "Validation",
-          "Redis",
-          "Testing",
-          "Docker",
-          "CI/CD",
-        ],
-      },
-    ],
-  };
-
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
         {children}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-          }}
-        />
+        <JsonLdSchema />
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
-# Engineering Portfolio
+# Muhammad Yasir — Portfolio
 
-A backend-leaning full-stack portfolio built with Next.js 16, React 19, strict TypeScript, Tailwind CSS 4, Motion, Zod, and Playwright.
+A personal Full-Stack Engineer portfolio built with Next.js 16, React 19, strict TypeScript, Tailwind CSS 4, Motion, Zod, dotLottie, and Playwright.
 
 ## Run locally
 
@@ -23,14 +23,21 @@ npm run test:e2e
 
 The Playwright suite covers 375×812, 430×932, 768×1024, and 1440×900.
 
-## Add real content
+## Contact delivery
 
-- Update personal facts and links in `data/profile.ts`.
-- Add verified role history in `data/experience.ts`.
-- Replace the single `Demo System` object in `data/projects.ts`; do not add fabricated projects.
-- Set `NEXT_PUBLIC_SITE_URL` to the production origin.
-- Replace the printable résumé placeholder at `/resume` after verified résumé content is available.
+The contact form validates on the client and server. It deliberately returns a visible configuration message instead of pretending to deliver when these server-only variables are missing:
 
-## Deploy
+```bash
+RESEND_API_KEY=
+CONTACT_TO_EMAIL=
+CONTACT_FROM_EMAIL=
+```
 
-The app is statically prerendered and ready for Vercel. Add `NEXT_PUBLIC_SITE_URL` in the Vercel project settings before the production deployment so canonical, sitemap, and Open Graph URLs use the live domain.
+## Content sources
+
+- Identity and verified links: `data/profile.ts`
+- Project case studies: `data/projects.ts`
+- Employment history: `data/experience.ts`
+- Engineering focus and stack: `data/skills.ts`
+
+Only verified facts should be added. The internal case-study template must be replaced—not duplicated as a claimed project—when real work is ready.

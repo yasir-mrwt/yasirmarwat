@@ -1,6 +1,7 @@
 import { Container } from "@/components/layout/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { experience } from "@/data/experience";
+import { profileData } from "@/data/profile";
 
 export function Experience() {
   return (
@@ -11,29 +12,37 @@ export function Experience() {
     >
       <Container>
         <SectionHeader
-          index="08"
           eyebrow="EXPERIENCE"
-          title="Work, systems, and what changed because of it."
-          intro="This area is intentionally honest while factual role details are being prepared."
+          title="Work described through contribution."
+          intro={`${profileData.experienceSummary}. Role-by-role details will be published only from verified records.`}
         />
         {experience.length ? (
           <ol className="timeline">
             {experience.map((item) => (
               <li key={`${item.context}-${item.period}`}>
-                <span>{item.period}</span>
-                <h3>{item.title}</h3>
-                <p>{item.context}</p>
+                <div className="timeline-meta">
+                  <span>{item.period}</span>
+                  <span>{item.context}</span>
+                </div>
+                <div className="timeline-copy">
+                  <h3>{item.title}</h3>
+                  <ul>
+                    {item.responsibilities.map((responsibility) => (
+                      <li key={responsibility}>{responsibility}</li>
+                    ))}
+                  </ul>
+                  <p>{item.technologies.join(" · ")}</p>
+                </div>
               </li>
             ))}
           </ol>
         ) : (
-          <div className="empty-state">
-            <span>CONTENT STATUS / NEEDS FACTS</span>
-            <h3>TODO: add real experience entries</h3>
+          <div className="experience-pending">
+            <span>VERIFIED HISTORY PENDING</span>
             <p>
-              Roles, companies, dates, responsibilities, systems, testing,
-              deployment, debugging, collaboration, and learning will appear
-              here only after they are supplied and verified.
+              Company names, dates, responsibilities, and project context are
+              intentionally withheld until the factual employment record is
+              added.
             </p>
           </div>
         )}

@@ -1,13 +1,14 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Github, Linkedin, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { profileData } from "@/data/profile";
 
 const navigation = [
   ["Work", "work"],
-  ["Engineering", "engineering"],
   ["Experience", "experience"],
+  ["Stack", "stack"],
   ["About", "about"],
   ["Contact", "contact"],
 ] as const;
@@ -87,8 +88,8 @@ export function Header() {
       </a>
       <div className="header-inner">
         <Link className="wordmark" href="#home">
-          <span aria-hidden="true">I/O</span>
-          <span className="wordmark-copy">SYSTEMS / INTERFACES</span>
+          <span aria-hidden="true">YM</span>
+          <span className="wordmark-copy">YASIR MARWAT</span>
         </Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navigation.map(([label, id]) => (
@@ -102,6 +103,24 @@ export function Header() {
           ))}
           <Link href="/resume">Résumé</Link>
         </nav>
+        <div className="header-socials">
+          <a
+            href={profileData.socials.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub profile"
+          >
+            <Github size={17} />
+          </a>
+          <a
+            href={profileData.socials.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn profile"
+          >
+            <Linkedin size={17} />
+          </a>
+        </div>
         <button
           ref={openButton}
           className="menu-trigger"
@@ -122,7 +141,7 @@ export function Header() {
         aria-hidden={!open}
       >
         <div className="mobile-menu-top">
-          <span className="mono-label">NAVIGATION / 01</span>
+          <span className="mono-label">MUHAMMAD YASIR / NAVIGATION</span>
           <button
             ref={closeButton}
             type="button"
@@ -133,14 +152,13 @@ export function Header() {
           </button>
         </div>
         <nav aria-label="Mobile navigation">
-          {navigation.map(([label, id], index) => (
+          {navigation.map(([label, id]) => (
             <Link
               key={id}
               href={`#${id}`}
               tabIndex={open ? 0 : -1}
               onClick={() => setOpen(false)}
             >
-              <span>0{index + 1}</span>
               {label}
             </Link>
           ))}
@@ -149,10 +167,30 @@ export function Header() {
             tabIndex={open ? 0 : -1}
             onClick={() => setOpen(false)}
           >
-            <span>06</span>Résumé
+            Résumé
           </Link>
         </nav>
-        <p>Backend-leaning full-stack engineering · UTC+5</p>
+        <div className="mobile-menu-socials">
+          <a
+            href={profileData.socials.github}
+            target="_blank"
+            rel="noreferrer"
+            tabIndex={open ? 0 : -1}
+          >
+            GitHub ↗
+          </a>
+          <a
+            href={profileData.socials.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            tabIndex={open ? 0 : -1}
+          >
+            LinkedIn ↗
+          </a>
+        </div>
+        <p>
+          {profileData.location} · {profileData.timezone}
+        </p>
       </div>
     </header>
   );
