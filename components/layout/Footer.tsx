@@ -11,7 +11,12 @@ export function Footer() {
         <p>
           {profileData.displayTitle} · {profileData.location}
         </p>
-        <a href="#home">Back to top ↑</a>
+        <div className="footer-links">
+          <a href={profileData.resumeUrl} target="_blank" rel="noreferrer">
+            Résumé ↗
+          </a>
+          <a href="#home">Back to top ↑</a>
+        </div>
       </Container>
     </footer>
   );

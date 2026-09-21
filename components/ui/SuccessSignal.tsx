@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Check } from "lucide-react";
-import { useReducedMotion } from "motion/react";
+import { useReducedMotionPreference } from "@/components/motion/useReducedMotionPreference";
 
 const DotLottie = dynamic(
   () =>
@@ -13,13 +13,13 @@ const DotLottie = dynamic(
 );
 
 export function SuccessSignal() {
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useReducedMotionPreference();
   return (
     <div className="success-signal" aria-hidden="true">
       {reducedMotion ? (
         <Check />
       ) : (
-        <DotLottie src="/lottie/contact-success.json" autoplay loop={false} />
+        <DotLottie src="/lottie/contact-us.json" autoplay loop={false} />
       )}
     </div>
   );

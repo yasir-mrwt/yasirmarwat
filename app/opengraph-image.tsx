@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
           color: "#A0A7AF",
         }}
       >
-        <span>MUHAMMAD YASIR / YASIR MARWAT</span>
+        <span>YASIR MARWAT</span>
         <span style={{ color: "#FF5A36" }}>PESHAWAR, PAKISTAN</span>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

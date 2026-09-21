@@ -1,8 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Github, Linkedin, X } from "lucide-react";
-import Link from "next/link";
-import { useRef } from "react";
+import { useRef, type KeyboardEvent } from "react";
 import { profileData } from "@/data/profile";
 
 export function RecruiterFastPath() {
@@ -14,19 +13,35 @@ export function RecruiterFastPath() {
     triggerRef.current?.focus();
   }
 
+  function trapFocus(event: KeyboardEvent<HTMLDialogElement>) {
+    if (event.key !== "Tab" || !dialogRef.current) return;
+
+    const focusableElements = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements.at(-1);
+
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement?.focus();
+    } else if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement?.focus();
+    }
+  }
+
   return (
     <div className="fast-path">
-      <div>
-        <span className="mono-label">SHORT ON TIME?</span>
-        <p>Role, experience, strengths, and links in one focused view.</p>
-      </div>
       <button
         ref={triggerRef}
         className="fast-path-trigger"
         type="button"
         onClick={() => dialogRef.current?.showModal()}
       >
-        Recruiter fast view <ArrowUpRight size={16} />
+        60-second profile <ArrowUpRight size={16} />
       </button>
       <dialog
         ref={dialogRef}
@@ -35,6 +50,7 @@ export function RecruiterFastPath() {
         onClick={(event) => {
           if (event.target === dialogRef.current) close();
         }}
+        onKeyDown={trapFocus}
       >
         <article className="dialog-panel">
           <header>
@@ -48,15 +64,15 @@ export function RecruiterFastPath() {
           </header>
           <div className="dialog-title">
             <p>{profileData.displayTitle}</p>
-            <h2>
-              Building practical web products from interface to deployment.
-            </h2>
+            <h2>Across the product. Curious about the backend.</h2>
           </div>
           <p className="dialog-summary">{profileData.primaryNiche}</p>
           <dl>
             <div>
-              <dt>Experience</dt>
-              <dd>{profileData.experienceSummary}</dd>
+              <dt>Current focus</dt>
+              <dd>
+                End-to-end product features, APIs, data, and production behavior
+              </dd>
             </div>
             <div>
               <dt>Core technologies</dt>
@@ -66,21 +82,38 @@ export function RecruiterFastPath() {
               </dd>
             </div>
             <div>
-              <dt>Backend focus</dt>
+              <dt>Backend strengths</dt>
               <dd>
                 REST APIs, validation, caching, testing, Docker, CI/CD,
                 deployment debugging
               </dd>
             </div>
             <div>
-              <dt>Based in</dt>
+              <dt>Experience snapshot</dt>
+              <dd>{profileData.experienceSummary}</dd>
+            </div>
+            <div>
+              <dt>Selected work</dt>
+              <dd>
+                Five published product showcases spanning monitoring, AI,
+                commerce, education, and agency work
+              </dd>
+            </div>
+            <div>
+              <dt>Location</dt>
               <dd>
                 {profileData.location} · {profileData.timezone}
               </dd>
             </div>
+            <div>
+              <dt>Availability</dt>
+              <dd>{profileData.availability}</dd>
+            </div>
           </dl>
           <nav aria-label="Recruiter links">
-            <Link href="/resume">View résumé</Link>
+            <a href={profileData.resumeUrl} target="_blank" rel="noreferrer">
+              View résumé
+            </a>
             <a
               href={profileData.socials.github}
               target="_blank"

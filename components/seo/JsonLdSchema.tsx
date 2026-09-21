@@ -1,4 +1,5 @@
 import { profileData } from "@/data/profile";
+import { projects } from "@/data/projects";
 
 export function JsonLdSchema() {
   const schema = {
@@ -6,12 +7,19 @@ export function JsonLdSchema() {
     "@type": "ProfilePage",
     "@id": `${profileData.socials.website}/#profile-page`,
     url: profileData.socials.website,
-    name: `${profileData.fullName} (${profileData.alias}) — ${profileData.displayTitle}`,
+    name: `${profileData.fullName} — ${profileData.displayTitle}`,
+    hasPart: projects.map((project) => ({
+      "@type": "CreativeWork",
+      name: project.title,
+      description: project.summary,
+      url: project.links.live,
+      image: `${profileData.socials.website}${project.images.web}`,
+    })),
     mainEntity: {
       "@type": "Person",
       "@id": `${profileData.socials.website}/#person`,
       name: profileData.fullName,
-      alternateName: profileData.alias,
+      alternateName: profileData.alternateName,
       jobTitle: profileData.title,
       address: {
         "@type": "PostalAddress",

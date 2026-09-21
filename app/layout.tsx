@@ -7,13 +7,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(profileData.socials.website),
-  title: `${profileData.fullName} (${profileData.alias}) | ${profileData.displayTitle}`,
+  title: `${profileData.fullName} | ${profileData.displayTitle}`,
   description: profileData.aiSummary,
   keywords: [
     profileData.fullName,
-    profileData.alias,
     "Yasir Marwat Software Engineer",
-    "Muhammad Yasir Full-Stack Developer",
     "Full-Stack Engineer Peshawar",
     "Backend Developer Peshawar",
     "Node.js developer portfolio",
@@ -43,8 +41,8 @@ export const metadata: Metadata = {
     description: profileData.aiSummary,
     siteName: `${profileData.fullName} Portfolio`,
     locale: "en_US",
-    firstName: "Muhammad",
-    lastName: "Yasir",
+    firstName: "Yasir",
+    lastName: "Marwat",
     username: "yasirmarwat",
   },
   twitter: {
@@ -65,7 +63,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+    >
       <body>
         {children}
         <JsonLdSchema />

@@ -11,14 +11,38 @@ export default defineConfig({
   webServer: {
     command: "npm run start -- --hostname 127.0.0.1",
     url: "http://127.0.0.1:3000",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
+    env: {
+      BREVO_API_KEY: "",
+      CONTACT_TO_EMAIL: "",
+      CONTACT_FROM_EMAIL: "",
+      CONTACT_FROM_NAME: "",
+    },
   },
   projects: [
+    {
+      name: "mobile-320",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 320, height: 700 },
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
     {
       name: "mobile-375",
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 375, height: 812 },
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
+    {
+      name: "mobile-390",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 390, height: 844 },
         isMobile: true,
         hasTouch: true,
       },
@@ -35,6 +59,13 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 768, height: 1024 },
+      },
+    },
+    {
+      name: "desktop-1024",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1024, height: 900 },
       },
     },
     {

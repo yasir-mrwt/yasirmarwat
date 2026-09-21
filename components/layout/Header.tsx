@@ -101,7 +101,9 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <Link href="/resume">Résumé</Link>
+          <a href={profileData.resumeUrl} target="_blank" rel="noreferrer">
+            Résumé
+          </a>
         </nav>
         <div className="header-socials">
           <a
@@ -141,7 +143,7 @@ export function Header() {
         aria-hidden={!open}
       >
         <div className="mobile-menu-top">
-          <span className="mono-label">MUHAMMAD YASIR / NAVIGATION</span>
+          <span className="mono-label">YASIR MARWAT / NAVIGATION</span>
           <button
             ref={closeButton}
             type="button"
@@ -157,18 +159,21 @@ export function Header() {
               key={id}
               href={`#${id}`}
               tabIndex={open ? 0 : -1}
+              aria-current={active === id ? "location" : undefined}
               onClick={() => setOpen(false)}
             >
               {label}
             </Link>
           ))}
-          <Link
-            href="/resume"
+          <a
+            href={profileData.resumeUrl}
+            target="_blank"
+            rel="noreferrer"
             tabIndex={open ? 0 : -1}
             onClick={() => setOpen(false)}
           >
             Résumé
-          </Link>
+          </a>
         </nav>
         <div className="mobile-menu-socials">
           <a

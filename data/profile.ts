@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const profileSchema = z.object({
   fullName: z.string(),
-  alias: z.string(),
+  alternateName: z.string(),
   title: z.string(),
   specialization: z.string(),
   displayTitle: z.string(),
@@ -16,6 +16,7 @@ const profileSchema = z.object({
   aiSummary: z.string(),
   email: z.email().nullable(),
   education: z.string().nullable(),
+  resumeUrl: z.string(),
   socials: z.object({
     website: z.url(),
     linkedin: z.url(),
@@ -24,8 +25,8 @@ const profileSchema = z.object({
 });
 
 export const profileData = profileSchema.parse({
-  fullName: "Muhammad Yasir",
-  alias: "Yasir Marwat",
+  fullName: "Yasir Marwat",
+  alternateName: "Muhammad Yasir",
   title: "Full-Stack Engineer",
   specialization: "Backend-Leaning",
   displayTitle: "Full-Stack Engineer · Backend-Leaning",
@@ -33,14 +34,16 @@ export const profileData = profileSchema.parse({
   countryCode: "PK",
   locality: "Peshawar",
   timezone: "PKT (UTC+5)",
-  experienceSummary: "6–8 months of professional experience",
+  experienceSummary:
+    "Practical junior development experience across remote and on-site roles",
   availability: "Open to the right opportunity",
   primaryNiche:
-    "Full-stack product development with a stronger focus on backend architecture, API design, validation, data systems, reliability, and performance.",
+    "I build web products end to end, with most of my technical curiosity pulling toward backend architecture, APIs, data, reliability, and performance.",
   aiSummary:
-    "Muhammad Yasir, also professionally known as Yasir Marwat, is a full-stack software engineer based in Peshawar, Pakistan, with a stronger focus on backend engineering. He builds modern web applications using Next.js, React, TypeScript, Node.js, Express, PostgreSQL, MongoDB, Redis, Docker, testing, and CI/CD, with particular attention to API reliability, validation, caching, deployment, debugging, and production behavior.",
+    "Yasir Marwat is a backend-leaning full-stack engineer in Peshawar, Pakistan. He builds modern web products across React, Next.js, TypeScript, Node.js, Express, PostgreSQL, MongoDB, Redis, testing, Docker, and deployment.",
   email: null,
   education: null,
+  resumeUrl: "/muhammad_yasir.pdf",
   socials: {
     website: "https://yasirmarwat.site",
     linkedin: "https://www.linkedin.com/in/muhammad-yasir-50b240315/",

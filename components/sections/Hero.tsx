@@ -12,7 +12,7 @@ export function Hero() {
         <div className="hero-copy">
           <div className="hero-identity">
             <span>{profileData.fullName}</span>
-            <span>also known as {profileData.alias}</span>
+            <span>{profileData.displayTitle}</span>
           </div>
           <h1 id="hero-title">
             Full-Stack <em>Engineer.</em>
@@ -29,13 +29,16 @@ export function Hero() {
             <Button href="#work" variant="primary">
               View work <ArrowDown size={16} />
             </Button>
-            <Button href="/resume">Résumé</Button>
+            <Button href={profileData.resumeUrl} target="_blank">
+              Résumé
+            </Button>
             <Button href={profileData.socials.github}>
               GitHub <Github size={16} />
             </Button>
             <Button href="#contact" variant="quiet">
               Contact <ArrowUpRight size={16} />
             </Button>
+            <RecruiterFastPath />
           </div>
           <div className="hero-meta">
             <span>
@@ -55,8 +58,6 @@ export function Hero() {
         </div>
 
         <HeroCanvas />
-
-        <RecruiterFastPath />
       </Container>
     </section>
   );

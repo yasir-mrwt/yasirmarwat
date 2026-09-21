@@ -17,8 +17,8 @@ export function Contact() {
           <span className="section-kicker">CONTACT</span>
           <h2 id="contact-title">Let’s talk about the work.</h2>
           <p>
-            For a role, project, or technical problem that fits my experience,
-            send a concise note or reach out through a verified profile.
+            Have a role, project, or technical problem that fits my experience?
+            Send a concise note and I’ll take it from there.
           </p>
           <div className="contact-actions">
             <Button href={profileData.socials.github}>
@@ -27,7 +27,7 @@ export function Contact() {
             <Button href={profileData.socials.linkedin}>
               <Linkedin size={16} /> LinkedIn
             </Button>
-            <Button href="/resume">
+            <Button href={profileData.resumeUrl} target="_blank">
               Résumé <ArrowUpRight size={16} />
             </Button>
             {profileData.email ? <CopyEmail email={profileData.email} /> : null}
