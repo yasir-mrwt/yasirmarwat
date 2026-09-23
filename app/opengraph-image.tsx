@@ -58,7 +58,7 @@ export default function OpenGraphImage() {
         }}
       >
         <span>Backend-Leaning · Product-Minded</span>
-        <span style={{ color: "#A0A7AF" }}>yasirmarwat.site</span>
+        <span style={{ color: "#A0A7AF" }}>www.yasirmarwat.site</span>
       </div>
     </div>,
     size,

@@ -370,7 +370,11 @@ test("identity metadata and crawler endpoints are available", async ({
   await page.goto("/");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://yasirmarwat.site",
+    "https://www.yasirmarwat.site/",
+  );
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    "content",
+    "https://www.yasirmarwat.site/",
   );
   const schema = await page
     .locator('script[type="application/ld+json"]')
@@ -378,10 +382,15 @@ test("identity metadata and crawler endpoints are available", async ({
   expect(schema).toContain('"name":"Yasir Marwat"');
   expect(schema).toContain('"alternateName":"Muhammad Yasir"');
   expect(schema).toContain('"@type":"ProfilePage"');
+  expect(schema).toContain('"url":"https://www.yasirmarwat.site/"');
   const robots = await (await request.get("/robots.txt")).text();
-  expect(robots).toContain("https://yasirmarwat.site/sitemap.xml");
+  expect(robots).toContain("User-Agent: *");
+  expect(robots).toContain("Allow: /");
+  expect(robots).toContain("https://www.yasirmarwat.site/sitemap.xml");
   const sitemap = await (await request.get("/sitemap.xml")).text();
-  expect(sitemap).toContain("https://yasirmarwat.site");
+  expect(sitemap).toContain("<loc>https://www.yasirmarwat.site/</loc>");
+  expect(sitemap.match(/<loc>/g)).toHaveLength(1);
+  expect(sitemap).not.toContain("<loc>https://yasirmarwat.site");
   expect(sitemap).not.toContain("case-study-template");
 });
 

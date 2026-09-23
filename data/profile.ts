@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SITE_URL } from "@/data/site";
 
 const profileSchema = z.object({
   fullName: z.string(),
@@ -45,7 +46,7 @@ export const profileData = profileSchema.parse({
   education: null,
   resumeUrl: "/muhammad_yasir.pdf",
   socials: {
-    website: "https://yasirmarwat.site",
+    website: SITE_URL,
     linkedin: "https://www.linkedin.com/in/muhammad-yasir-50b240315/",
     github: "https://github.com/yasir-mrwt",
   },

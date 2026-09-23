@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { profileData } from "@/data/profile";
+import { SITE_URL } from "@/data/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: `${profileData.socials.website}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

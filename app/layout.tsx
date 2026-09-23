@@ -3,10 +3,11 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
 import { profileData } from "@/data/profile";
+import { SITE_HOME_URL, SITE_URL } from "@/data/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(profileData.socials.website),
+  metadataBase: new URL(SITE_URL),
   title: `${profileData.fullName} | ${profileData.displayTitle}`,
   description: profileData.aiSummary,
   keywords: [
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     "PostgreSQL Node.js developer",
     "Redis caching API validation portfolio",
   ],
-  authors: [{ name: profileData.fullName, url: profileData.socials.website }],
+  authors: [{ name: profileData.fullName, url: SITE_HOME_URL }],
   creator: profileData.fullName,
   robots: {
     index: true,
@@ -33,10 +34,8 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: { canonical: profileData.socials.website },
   openGraph: {
     type: "profile",
-    url: profileData.socials.website,
     title: `${profileData.fullName} | ${profileData.displayTitle}`,
     description: profileData.aiSummary,
     siteName: `${profileData.fullName} Portfolio`,
@@ -68,6 +67,10 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
+      <head>
+        <link rel="canonical" href={SITE_HOME_URL} />
+        <meta property="og:url" content={SITE_HOME_URL} />
+      </head>
       <body>
         {children}
         <JsonLdSchema />

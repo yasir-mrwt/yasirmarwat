@@ -1,23 +1,24 @@
 import { profileData } from "@/data/profile";
 import { projects } from "@/data/projects";
+import { SITE_HOME_URL, SITE_URL } from "@/data/site";
 
 export function JsonLdSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    "@id": `${profileData.socials.website}/#profile-page`,
-    url: profileData.socials.website,
+    "@id": `${SITE_URL}/#profile-page`,
+    url: SITE_HOME_URL,
     name: `${profileData.fullName} — ${profileData.displayTitle}`,
     hasPart: projects.map((project) => ({
       "@type": "CreativeWork",
       name: project.title,
       description: project.summary,
       url: project.links.live,
-      image: `${profileData.socials.website}${project.images.web}`,
+      image: `${SITE_URL}${project.images.web}`,
     })),
     mainEntity: {
       "@type": "Person",
-      "@id": `${profileData.socials.website}/#person`,
+      "@id": `${SITE_URL}/#person`,
       name: profileData.fullName,
       alternateName: profileData.alternateName,
       jobTitle: profileData.title,
@@ -26,7 +27,7 @@ export function JsonLdSchema() {
         addressLocality: profileData.locality,
         addressCountry: profileData.countryCode,
       },
-      url: profileData.socials.website,
+      url: SITE_HOME_URL,
       sameAs: [profileData.socials.linkedin, profileData.socials.github],
       knowsAbout: [
         "Software Engineering",

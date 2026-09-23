@@ -50,5 +50,7 @@ Project screenshots live under `public/projects`, and the published résumé is 
 1. Push the repository and import it into Vercel.
 2. Add the four Brevo/contact environment variables.
 3. Deploy and verify the default Vercel URL, including `/api/contact` configuration behavior.
-4. Attach `yasirmarwat.site` only after the default deployment is healthy.
+4. Attach `www.yasirmarwat.site` as the production domain only after the
+   default deployment is healthy, then configure Vercel to redirect the apex
+   `yasirmarwat.site` domain to `www`.
 5. Configure the DNS records Vercel provides and verify the canonical production domain.
