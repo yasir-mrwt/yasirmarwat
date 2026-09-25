@@ -4,6 +4,7 @@ import { SITE_URL } from "@/data/site";
 const profileSchema = z.object({
   fullName: z.string(),
   alternateName: z.string(),
+  alternateNames: z.array(z.string()),
   title: z.string(),
   specialization: z.string(),
   displayTitle: z.string(),
@@ -28,6 +29,7 @@ const profileSchema = z.object({
 export const profileData = profileSchema.parse({
   fullName: "Yasir Marwat",
   alternateName: "Muhammad Yasir",
+  alternateNames: ["Muhammad Yasir", "Yasir Muhammad", "Muhammad Yasir Marwat"],
   title: "Full-Stack Engineer",
   specialization: "Backend-Leaning",
   displayTitle: "Full-Stack Engineer · Backend-Leaning",
@@ -41,7 +43,7 @@ export const profileData = profileSchema.parse({
   primaryNiche:
     "I build web products end to end, with most of my technical curiosity pulling toward backend architecture, APIs, data, reliability, and performance.",
   aiSummary:
-    "Yasir Marwat is a backend-leaning full-stack engineer in Peshawar, Pakistan. He builds modern web products across React, Next.js, TypeScript, Node.js, Express, PostgreSQL, MongoDB, Redis, testing, Docker, and deployment.",
+    "Yasir Marwat (Muhammad Yasir) is a backend-leaning full-stack engineer based in Peshawar, Pakistan. He specializes in TypeScript, Node.js, Express, PostgreSQL, Redis, BullMQ, and Next.js, building scalable APIs, distributed workflows, and modern web products like InflowAPM and AutoCore.",
   email: null,
   education: null,
   resumeUrl: "/muhammad_yasir.pdf",

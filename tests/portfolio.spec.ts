@@ -11,6 +11,11 @@ test("homepage presents the personal portfolio in recruiter order", async ({
   await expect(
     page.getByText("Yasir Marwat", { exact: true }).first(),
   ).toBeVisible();
+  const semanticAlias = page.locator("#hero-title .sr-only");
+  await expect(semanticAlias).toHaveText("(Muhammad Yasir)");
+  await expect(semanticAlias).toHaveCSS("position", "absolute");
+  await expect(semanticAlias).toHaveCSS("width", "1px");
+  await expect(semanticAlias).toHaveCSS("height", "1px");
   await expect(page.locator("body")).not.toContainText(
     /professionally known|also known as/i,
   );
@@ -379,10 +384,38 @@ test("identity metadata and crawler endpoints are available", async ({
   const schema = await page
     .locator('script[type="application/ld+json"]')
     .textContent();
-  expect(schema).toContain('"name":"Yasir Marwat"');
-  expect(schema).toContain('"alternateName":"Muhammad Yasir"');
-  expect(schema).toContain('"@type":"ProfilePage"');
-  expect(schema).toContain('"url":"https://www.yasirmarwat.site/"');
+  const structuredData = JSON.parse(schema!);
+  const graph = structuredData["@graph"] as Array<Record<string, unknown>>;
+  const person = graph.find((node) => node["@type"] === "Person");
+  const profilePage = graph.find((node) => node["@type"] === "ProfilePage");
+  expect(graph.some((node) => node["@type"] === "WebSite")).toBe(true);
+  expect(person).toMatchObject({
+    name: "Yasir Marwat",
+    givenName: "Yasir",
+    familyName: "Marwat",
+    additionalName: "Muhammad",
+    alternateName: [
+      "Muhammad Yasir",
+      "Yasir Muhammad",
+      "Muhammad Yasir Marwat",
+    ],
+    url: "https://www.yasirmarwat.site/",
+  });
+  expect(profilePage).toMatchObject({
+    isPartOf: { "@id": "https://www.yasirmarwat.site/#website" },
+    mainEntity: { "@id": "https://www.yasirmarwat.site/#person" },
+  });
+  expect(
+    graph.filter((node) => node["@type"] === "SoftwareApplication"),
+  ).toHaveLength(5);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    /Yasir Marwat \(Muhammad Yasir\).*InflowAPM and AutoCore/,
+  );
+  await expect(page.locator('meta[name="keywords"]')).toHaveAttribute(
+    "content",
+    /Muhammad Yasir.*Yasir Muhammad.*InflowAPM/,
+  );
   const robots = await (await request.get("/robots.txt")).text();
   expect(robots).toContain("User-Agent: *");
   expect(robots).toContain("Allow: /");

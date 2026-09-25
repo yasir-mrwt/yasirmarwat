@@ -15,6 +15,7 @@ export function Hero() {
             <span>{profileData.displayTitle}</span>
           </div>
           <h1 id="hero-title">
+            Yasir Marwat <span className="sr-only">(Muhammad Yasir)</span> —
             Full-Stack <em>Engineer.</em>
           </h1>
           <p className="hero-role">
